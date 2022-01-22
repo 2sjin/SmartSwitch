@@ -1,0 +1,116 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:gravity="center|top"
+    android:orientation="vertical"
+    android:layout_marginTop="30dp"
+    tools:context=".MainActivity" >
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="86dp"
+        android:layout_marginBottom="25dp"
+        android:gravity="center"
+        android:orientation="horizontal">
+
+        <Button
+            android:id="@+id/buttonOn"
+            android:layout_width="160dp"
+            android:layout_height="80dp"
+            android:layout_marginLeft="15dp"
+            android:layout_marginRight="15dp"
+            android:onClick="onClickButtonOn"
+            android:text="켜기\n(ON)"
+            android:textSize="20dp" />
+
+        <Button
+            android:id="@+id/buttonOff"
+            android:layout_width="160dp"
+            android:layout_height="80dp"
+            android:layout_marginLeft="15dp"
+            android:layout_marginRight="15dp"
+            android:onClick="onClickButtonOff"
+            android:text="끄기\n(OFF)"
+            android:textSize="20dp" />
+    </LinearLayout>
+
+    <Switch
+        android:id="@+id/alarmSwitch"
+        android:layout_width="374dp"
+        android:layout_height="54dp"
+        android:checked="true"
+        android:onClick="onClickAlarmSwitch"
+        android:text="스케쥴 모드" />
+
+    <LinearLayout
+        android:id="@+id/alarmLayout"
+        android:layout_width="372dp"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <TimePicker
+            android:id="@+id/timePicker"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:timePickerMode="spinner" />
+
+        <TextView
+            android:id="@+id/textView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:text="설정한 시간이 되면" />
+
+        <RadioGroup
+            android:layout_width="match_parent"
+            android:layout_height="67dp"
+            android:orientation="horizontal">
+
+            <RadioButton
+                android:id="@+id/radioButton"
+                android:layout_width="183dp"
+                android:layout_height="50dp"
+                android:text="스위치 켜기(ON)" />
+
+            <RadioButton
+                android:id="@+id/radioButton2"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:text="스위치 끄기(OFF)" />
+        </RadioGroup>
+
+        <TextView
+            android:id="@+id/textView2"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Wi-Fi" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="63dp"
+            android:gravity="center"
+            android:orientation="horizontal">
+
+            <EditText
+                android:id="@+id/etPortNumber"
+                android:layout_width="263dp"
+                android:layout_height="wrap_content"
+                android:ems="10"
+                android:hint="Port Number(default = 80)"
+                android:inputType="number" />
+
+            <Button
+                android:id="@+id/button"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="20dp"
+                android:onClick="startTest"
+                android:text="접속" />
+        </LinearLayout>
+
+    </LinearLayout>
+
+</LinearLayout>
