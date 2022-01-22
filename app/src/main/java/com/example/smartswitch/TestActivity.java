@@ -56,7 +56,7 @@ public class TestActivity extends AppCompatActivity {
                 android.R.layout.simple_list_item_1 );
         mMessageListview.setAdapter(mConversationArrayAdapter);
 
-        new Thread(new ConnectThread("192.168.0.23", MainActivity.portNumber)).start();
+        new Thread(new ConnectThread("192.168.0.23", 80)).start();
     }
 
     @Override

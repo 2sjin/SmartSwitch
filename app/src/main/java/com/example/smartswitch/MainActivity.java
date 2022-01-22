@@ -11,12 +11,10 @@ import android.webkit.WebView;
 import android.widget.*;
 
 public class MainActivity extends AppCompatActivity {
-    static int portNumber = 80;
     private static long back_pressed;
 
     Switch alarmSwitch;
     LinearLayout alarmLayout;
-    EditText etPortNumber;
     WebView webView;
 
     @Override
@@ -67,21 +65,22 @@ public class MainActivity extends AppCompatActivity {
         webView.loadUrl("192.168.0.23/ledOff");
     }
 
+    // 연결 버튼을 눌렀을 때
+    public void onClickButtonConnect(View view) {
+        Intent intent = new Intent(getApplicationContext(), WifiManagerActivity.class);
+        startActivity(intent);
+    }
+
     // View 불러오기
     public void loadView() {
-        alarmSwitch = findViewById(R.id.alarmSwitch);
-        alarmLayout = findViewById(R.id.alarmLayout);
-        etPortNumber = findViewById(R.id.etPortNumber);
-        webView = findViewById(R.id.webView);
+        alarmSwitch = findViewById(R.id.onAlarmSwitch);
+        alarmLayout = findViewById(R.id.AlarmLayout);
+        webView = findViewById(R.id.wmWebView);
     }
 
     // 테스트
     public void startTest(View view) {
         Intent intent = new Intent(getApplicationContext(), TestActivity.class);
-        if(!String.valueOf(etPortNumber.getText()).equals(""))
-            portNumber = Integer.parseInt(String.valueOf(etPortNumber.getText()));
-        else
-            portNumber = 80;
         startActivity(intent);
     }
 
@@ -100,6 +99,8 @@ public class MainActivity extends AppCompatActivity {
         });
         builder.create().show();
     }
+
+
 
 }
 
