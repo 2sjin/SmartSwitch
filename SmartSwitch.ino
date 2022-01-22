@@ -1,94 +1,98 @@
-
 #include <ESP8266WiFi.h>
+#include <WiFiClient.h>
+#include <ESP8266WebServer.h>
+#include <WiFiManager.h> // https://github.com/tzapu/WiFiManager
+//for LED status
+#include <Ticker.h>
+Ticker ticker;
 
-const char* ssid = "HomeNet(2.4GHz)";
-const char* password = "1593570ab";
-int ledPin = 2; // D4 Pin
-WiFiServer server(80);
+#define TRIGGER_PIN 0 // trigger pin 0(D3) 2(D4)
+#define CUSTOM_PIN 2     // 사용자 설정 핀(D4)
+
+String sChipId="";
+char cChipId[40]="";
+ESP8266WebServer server(80);
+
+int bootMode=0; //0:station  1:AP
+int LED = LED_BUILTIN;
+unsigned long now,lastConnectTry = 0,count=0;
+
+void tick()
+{
+  //toggle state
+  digitalWrite(LED, !digitalRead(LED));     // set pin to the opposite state
+}
 
 void setup() {
+ 
   // put your setup code here, to run once:
   Serial.begin(115200);
-  delay(10);
 
-  //LED 세팅
-  pinMode(ledPin, OUTPUT);
-  digitalWrite(ledPin, LOW);
+  // 사용자 지정 핀 세팅
+  pinMode(CUSTOM_PIN, OUTPUT);
+  digitalWrite(CUSTOM_PIN, LOW);
 
-  //WiFi 연결
-  WiFi.disconnect(true);
-  delay(1000);
-  Serial.print("\nConnecting to ");
-  Serial.print(ssid);
+  // AP 이름 자동으로 만듬 i2r-chipid
+  sChipId = "i2r-"+String(ESP.getChipId(),HEX);
+  sChipId.toCharArray(cChipId,sChipId.length()+1);
+  Serial.println(sChipId);
+
+  wifiManager();
+
+  server.on("/", handleRoot);
+  server.on("/on", handleOn);
+  server.on("/off", handleOff);
+  server.on("/scan", handleScan);
+  server.on("/wifi", handleWifi);
+  server.onNotFound(handleNotFound);
+
+  server.on("/ledOn", handleLedOn);
+  server.on("/ledOff", handleLedOff);
   
-  WiFi.begin(ssid, password);
-  while(WiFi.status() != WL_CONNECTED){
-    delay(500);
-    Serial.print(".");
+  server.begin();
+  Serial.println("HTTP server started");
+}
+
+void wifiManager() {
+  pinMode(LED, OUTPUT);
+  // start ticker with 0.5 because we start in AP mode and try to connect
+  ticker.attach(0.6, tick);
+
+  //WiFiManager
+  WiFi.mode(WIFI_STA); // explicitly set mode, esp defaults to STA+AP
+  WiFiManager wm;
+  // wm.resetSettings(); //reset settings - for testing
+
+  if (!wm.autoConnect(cChipId)) {
+    Serial.println("failed to connect and hit timeout");
+    //reset and try again, or maybe put it to deep sleep
+    ESP.restart();
+    delay(1000);
   }
 
-  Serial.println("");
-  Serial.println("WiFi connected");
-  Serial.println("IP Address: ");
-  Serial.println(WiFi.localIP());
+  //if you get here you have connected to the WiFi
+  Serial.println("connected... :)");
+  ticker.detach();
+  //keep LED on
 
-  //Server 시작
-  server.begin();
-  Serial.println("Server started");
-  Serial.print("Use this URL to connect: ");
-  Serial.print("http://");
-  Serial.print(WiFi.localIP());
-  Serial.print("/");
-
+  digitalWrite(LED, LOW);  
 }
 
 void loop() {
-  // put your main code here, to run repeatedly:
-  //client 접속 확인
-  WiFiClient client = server.available();
-  if(!client){
-    return;
+  server.handleClient();
+
+  now = millis();
+  //와이파이 연결되면 1초 간격으로 점등
+  unsigned int sWifi = WiFi.status();
+  if(now >= (lastConnectTry + 3000)) {
+    Serial.println ( WiFi.localIP() );
+    lastConnectTry=now;
+    count++;
+    if(count>=3600*24)
+      count=0;
   }
 
-  //client가 보내는 데이터를 기다린다.
-  Serial.println("new client");
-  while(!client.available()){
-    delay(1);
-  }
-
- //요청을 읽는다.
- String request = client.readStringUntil('\r');
- Serial.println(request);
- client.flush();
-
- //요청에 url에 따라 LED를 ON/Off
- if (request.indexOf("/ledOn") > 0){
-  digitalWrite(ledPin, HIGH);
- }
- if (request.indexOf("/ledOff") > 0){
-  digitalWrite(ledPin, LOW);
- }
- 
-
- // Return the response 웹브라우저에 출력할 웹페이지
-  client.println("HTTP/1.1 200 OK");  
-  client.println("Content-Type: text/html");
-  client.println(""); //  do not forget this one
-  client.println("<!DOCTYPE HTML>");
-  client.println("<html>");
-  client.println("<head>");
-  client.println("<meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\">");
-  client.println("<meta name='apple-mobile-web-app-capable' content='yes' />");
-  client.println("<meta name='apple-mobile-web-app-status-bar-style' content='black-translucent' />");
- client.println("</head>");
-  client.println("<body bgcolor = \"#fff\">"); 
-  client.println("<div style=\"width: 100%; margin:0 auto; text-align: center;\"><h4>NodeMCU Device Control</h4></div>");
-  client.println("<div style=\"width: 100%; margin:0 auto; text-align:center\">");
-  client.println("LED<br>");
-  client.println("<a href=\"/ledOn\"\"><button>Turn On</button></a>");
-  client.println("<a href=\"/ledOff\"\"><button>Turn Off</button></a><br />");  
-  client.println("</div>");
-  client.println("</body>");  
-  client.println("</html>"); 
-  delay(1);
+  //공장리셋
+  if ( digitalRead(TRIGGER_PIN) == LOW ) 
+    factoryDefault();
 }
