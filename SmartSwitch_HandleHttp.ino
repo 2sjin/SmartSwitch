@@ -22,12 +22,14 @@ void handleWifi() {
 }
 
 void handleOn() {
-  digitalWrite(LED, 0);
+  digitalWrite(LED, LOW);
+  servo.write(180);
   GoHome();
 }
 
 void handleOff() {
-  digitalWrite(LED, 1);
+  digitalWrite(LED, HIGH);
+  servo.write(-90);
   GoHome();
 }
 
@@ -58,15 +60,4 @@ void handleScan() {
   String s;
   s="{\"chipId\":\""+sChipId+"\",\"ip\":\""+WiFi.localIP().toString()+"\"}";
   server.send(200, "text/html", s);
-}
-
-
-void handleLedOn() {
-  digitalWrite(CUSTOM_PIN, HIGH);
-  GoHome();
-}
-
-void handleLedOff() {
-  digitalWrite(CUSTOM_PIN, LOW);
-  GoHome();
 }

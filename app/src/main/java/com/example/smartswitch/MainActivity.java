@@ -21,9 +21,9 @@ public class MainActivity extends AppCompatActivity {
     LinearLayout alarmLayout2;
     TextView alarmTime1;
     TextView alarmTime2;
-
     WebView webView;
 
+    // 액티비티 생성 시
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -56,7 +56,7 @@ public class MainActivity extends AppCompatActivity {
         if(alarmSwitch1.isChecked() == true)
             alarmLayout1.setVisibility(View.VISIBLE);
         else
-            alarmLayout1.setVisibility(View.GONE);
+            alarmLayout1.setVisibility(View.INVISIBLE);
     }
 
     // 알람 스위치 2 눌렀을 때
@@ -64,7 +64,7 @@ public class MainActivity extends AppCompatActivity {
         if(alarmSwitch2.isChecked() == true)
             alarmLayout2.setVisibility(View.VISIBLE);
         else
-            alarmLayout2.setVisibility(View.GONE);
+            alarmLayout2.setVisibility(View.INVISIBLE);
     }
 
     // 알람 설정 버튼 1 눌렀을 때
@@ -80,13 +80,13 @@ public class MainActivity extends AppCompatActivity {
     // ON 버튼을 눌렀을 때
     public void onClickButtonOn(View view) {
         Toast.makeText(getApplicationContext(), "ButtonOn is clicked.", Toast.LENGTH_SHORT).show();
-        webView.loadUrl("192.168.0.23/ledOn");
+        webView.loadUrl("192.168.0.23/on");
     }
 
     // OFF 버튼을 눌렀을 때
     public void onClickButtonOff(View view) {
         Toast.makeText(getApplicationContext(), "ButtonOff is clicked.", Toast.LENGTH_SHORT).show();
-        webView.loadUrl("192.168.0.23/ledOff");
+        webView.loadUrl("192.168.0.23/off");
     }
 
     // 연결 버튼을 눌렀을 때
@@ -95,7 +95,7 @@ public class MainActivity extends AppCompatActivity {
         startActivity(intent);
     }
 
-    // 테스트
+    // 테스트 버튼을 눌렀을 때
     public void startTest(View view) {
         Intent intent = new Intent(getApplicationContext(), TestActivity.class);
         startActivity(intent);
@@ -116,7 +116,7 @@ public class MainActivity extends AppCompatActivity {
         builder.create().show();
     }
 
-    // TimePicker 다이얼로그 출력
+    // TimePicker 다이얼로그 출력(알람 설정)
     public void showTimePickerDialog(TextView tvAlarmTime) {
         TimePickerDialog timePickerDialog = new TimePickerDialog
                 (MainActivity.this, android.app.AlertDialog.THEME_HOLO_DARK, new TimePickerDialog.OnTimeSetListener() {
@@ -127,9 +127,6 @@ public class MainActivity extends AppCompatActivity {
                 }, alarmHour, alarmMinute, true);
         timePickerDialog.show();
     }
-
-
-
 
 }
 

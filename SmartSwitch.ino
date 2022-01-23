@@ -2,12 +2,17 @@
 #include <WiFiClient.h>
 #include <ESP8266WebServer.h>
 #include <WiFiManager.h> // https://github.com/tzapu/WiFiManager
+
 //for LED status
 #include <Ticker.h>
 Ticker ticker;
 
-#define TRIGGER_PIN 0 // trigger pin 0(D3) 2(D4)
-#define CUSTOM_PIN 2     // 사용자 설정 핀(D4)
+// 서보모터 status
+#include<Servo.h>
+Servo servo;
+
+#define TRIGGER_PIN 0   // trigger pin 0(D3) 2(D4)
+#define SERVO_PIN 2     // 서보모터 핀(D4)
 
 String sChipId="";
 char cChipId[40]="";
@@ -28,12 +33,11 @@ void setup() {
   // put your setup code here, to run once:
   Serial.begin(115200);
 
-  // 사용자 지정 핀 세팅
-  pinMode(CUSTOM_PIN, OUTPUT);
-  digitalWrite(CUSTOM_PIN, LOW);
+  // 서보모터 핀 세팅
+  servo.attach(SERVO_PIN);
 
   // AP 이름 자동으로 만듬 i2r-chipid
-  sChipId = "i2r-"+String(ESP.getChipId(),HEX);
+  sChipId = "SmartSwitch(i2r-" + String(ESP.getChipId(),HEX) + ")";
   sChipId.toCharArray(cChipId,sChipId.length()+1);
   Serial.println(sChipId);
 
@@ -45,9 +49,6 @@ void setup() {
   server.on("/scan", handleScan);
   server.on("/wifi", handleWifi);
   server.onNotFound(handleNotFound);
-
-  server.on("/ledOn", handleLedOn);
-  server.on("/ledOff", handleLedOff);
   
   server.begin();
   Serial.println("HTTP server started");
