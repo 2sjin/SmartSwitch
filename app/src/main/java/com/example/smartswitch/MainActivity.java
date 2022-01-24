@@ -13,7 +13,9 @@ import android.widget.*;
 
 public class MainActivity extends AppCompatActivity {
     private static long back_pressed;
-    int alarmHour=0, alarmMinute=0;
+    int alarmMode;
+    int [] alarmHour = new int[2];
+    int [] alarmMinute = new int[2];
 
     Switch alarmSwitch1;
     Switch alarmSwitch2;
@@ -21,7 +23,8 @@ public class MainActivity extends AppCompatActivity {
     LinearLayout alarmLayout2;
     TextView alarmTime1;
     TextView alarmTime2;
-    WebView webView;
+    WebView webViewMain;
+    WebView webViewForAlarm;
 
     // 액티비티 생성 시
     @Override
@@ -35,7 +38,18 @@ public class MainActivity extends AppCompatActivity {
         alarmLayout2 = findViewById(R.id.AlarmLayout2);
         alarmTime1 = findViewById(R.id.AlarmTime1);
         alarmTime2 = findViewById(R.id.AlarmTime2);
-        webView = findViewById(R.id.wmWebView);
+        webViewMain = findViewById(R.id.WebViewMain);
+        webViewForAlarm = findViewById(R.id.WebViewForAlarm);
+
+        webViewForAlarm.getSettings().setJavaScriptEnabled(true);
+        webViewForAlarm.getSettings().setJavaScriptCanOpenWindowsAutomatically(true);
+    }
+
+    // 액티비티 재개 시
+    @Override
+    protected void onResume() {
+        super.onResume();
+        webViewForAlarm.loadUrl("192.168.0.23/alarm");
     }
 
     // 뒤로가기 버튼을 눌렀을 때
@@ -69,24 +83,27 @@ public class MainActivity extends AppCompatActivity {
 
     // 알람 설정 버튼 1 눌렀을 때
     public void onClickAlarmButton1(View view) {
+        alarmMode = 0;
         showTimePickerDialog(alarmTime1);
     }
 
     // 알람 설정 버튼 2 눌렀을 때
     public void onClickAlarmButton2(View view) {
+        alarmMode = 1;
         showTimePickerDialog(alarmTime2);
     }
 
     // ON 버튼을 눌렀을 때
     public void onClickButtonOn(View view) {
         Toast.makeText(getApplicationContext(), "ButtonOn is clicked.", Toast.LENGTH_SHORT).show();
-        webView.loadUrl("192.168.0.23/on");
+        webViewMain.loadUrl("192.168.0.23/on");
     }
+
 
     // OFF 버튼을 눌렀을 때
     public void onClickButtonOff(View view) {
         Toast.makeText(getApplicationContext(), "ButtonOff is clicked.", Toast.LENGTH_SHORT).show();
-        webView.loadUrl("192.168.0.23/off");
+        webViewMain.loadUrl("192.168.0.23/off");
     }
 
     // 연결 버튼을 눌렀을 때
@@ -122,9 +139,13 @@ public class MainActivity extends AppCompatActivity {
                 (MainActivity.this, android.app.AlertDialog.THEME_HOLO_DARK, new TimePickerDialog.OnTimeSetListener() {
                     @Override
                     public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
-                        tvAlarmTime.setText(String.format("%02d : %02d", hourOfDay, minute));
+                        alarmHour[alarmMode] = hourOfDay;
+                        alarmMinute[alarmMode] = minute;
+                        tvAlarmTime.setText(String.format("%02d : %02d", alarmHour[alarmMode], alarmMinute[alarmMode]));
+                        webViewForAlarm.loadUrl("javascript:setAlarm" + alarmMode
+                                        + "(" + alarmHour[alarmMode] + ", " + alarmMinute[alarmMode] + ")");
                     }
-                }, alarmHour, alarmMinute, true);
+                }, alarmHour[alarmMode], alarmMinute[alarmMode], true);
         timePickerDialog.show();
     }
 

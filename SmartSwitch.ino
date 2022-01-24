@@ -48,6 +48,7 @@ void setup() {
   server.on("/off", handleOff);
   server.on("/scan", handleScan);
   server.on("/wifi", handleWifi);
+  server.on("/alarm", handleAlarm);
   server.onNotFound(handleNotFound);
   
   server.begin();

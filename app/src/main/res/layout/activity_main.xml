@@ -23,10 +23,17 @@
         app:layout_constraintTop_toTopOf="parent">
 
         <WebView
-            android:id="@+id/wmWebView"
+            android:id="@+id/WebViewMain"
             android:layout_width="match_parent"
             android:layout_height="123dp"
             android:visibility="gone">
+
+        </WebView>
+
+        <WebView
+            android:id="@+id/WebViewForAlarm"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
 
         </WebView>
 
@@ -63,7 +70,7 @@
                 android:layout_height="54dp"
                 android:checked="true"
                 android:onClick="onClickAlarmSwitch1"
-                android:text="켜기(ON) 예약" />
+                android:text="점등(ON) 예약" />
 
             <LinearLayout
                 android:id="@+id/AlarmLayout1"
@@ -95,7 +102,7 @@
                 android:layout_height="54dp"
                 android:checked="true"
                 android:onClick="onClickAlarmSwitch2"
-                android:text="끄기(OFF) 예약" />
+                android:text="소등(OFF) 예약" />
 
             <LinearLayout
                 android:id="@+id/AlarmLayout2"
