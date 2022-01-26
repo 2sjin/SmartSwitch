@@ -17,14 +17,13 @@ public class MainActivity extends AppCompatActivity {
     int [] alarmHour = new int[2];
     int [] alarmMinute = new int[2];
 
+    Switch alarmSwitch0;
     Switch alarmSwitch1;
-    Switch alarmSwitch2;
+    LinearLayout alarmLayout0;
     LinearLayout alarmLayout1;
-    LinearLayout alarmLayout2;
+    TextView alarmTime0;
     TextView alarmTime1;
-    TextView alarmTime2;
     WebView webViewMain;
-    WebView webViewForAlarm;
 
     // 액티비티 생성 시
     @Override
@@ -32,24 +31,13 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        alarmSwitch0 = findViewById(R.id.AlarmSwitch0);
         alarmSwitch1 = findViewById(R.id.AlarmSwitch1);
-        alarmSwitch2 = findViewById(R.id.AlarmSwitch2);
+        alarmLayout0 = findViewById(R.id.AlarmLayout0);
         alarmLayout1 = findViewById(R.id.AlarmLayout1);
-        alarmLayout2 = findViewById(R.id.AlarmLayout2);
+        alarmTime0 = findViewById(R.id.AlarmTime0);
         alarmTime1 = findViewById(R.id.AlarmTime1);
-        alarmTime2 = findViewById(R.id.AlarmTime2);
         webViewMain = findViewById(R.id.WebViewMain);
-        webViewForAlarm = findViewById(R.id.WebViewForAlarm);
-
-        webViewForAlarm.getSettings().setJavaScriptEnabled(true);
-        webViewForAlarm.getSettings().setJavaScriptCanOpenWindowsAutomatically(true);
-    }
-
-    // 액티비티 재개 시
-    @Override
-    protected void onResume() {
-        super.onResume();
-        webViewForAlarm.loadUrl("192.168.0.23/alarm");
     }
 
     // 뒤로가기 버튼을 눌렀을 때
@@ -65,45 +53,45 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-    // 알람 스위치 1 눌렀을 때
+    // 알람 스위치 0 눌렀을 때
     public void onClickAlarmSwitch1 (View view) {
+        if(alarmSwitch0.isChecked() == true)
+            alarmLayout0.setVisibility(View.VISIBLE);
+        else
+            alarmLayout0.setVisibility(View.INVISIBLE);
+    }
+
+    // 알람 스위치 1 눌렀을 때
+    public void onClickAlarmSwitch2 (View view) {
         if(alarmSwitch1.isChecked() == true)
             alarmLayout1.setVisibility(View.VISIBLE);
         else
             alarmLayout1.setVisibility(View.INVISIBLE);
     }
 
-    // 알람 스위치 2 눌렀을 때
-    public void onClickAlarmSwitch2 (View view) {
-        if(alarmSwitch2.isChecked() == true)
-            alarmLayout2.setVisibility(View.VISIBLE);
-        else
-            alarmLayout2.setVisibility(View.INVISIBLE);
+    // 알람 설정 버튼 0 눌렀을 때
+    public void onClickAlarmButton1(View view) {
+        alarmMode = 0;
+        showTimePickerDialog(alarmTime0);
     }
 
     // 알람 설정 버튼 1 눌렀을 때
-    public void onClickAlarmButton1(View view) {
-        alarmMode = 0;
-        showTimePickerDialog(alarmTime1);
-    }
-
-    // 알람 설정 버튼 2 눌렀을 때
     public void onClickAlarmButton2(View view) {
         alarmMode = 1;
-        showTimePickerDialog(alarmTime2);
+        showTimePickerDialog(alarmTime1);
     }
 
     // ON 버튼을 눌렀을 때
     public void onClickButtonOn(View view) {
         Toast.makeText(getApplicationContext(), "ButtonOn is clicked.", Toast.LENGTH_SHORT).show();
-        webViewMain.loadUrl("192.168.0.23/on");
+        webViewMain.loadUrl("192.168.0.23/onoff?LEDstatus=0");
     }
 
 
     // OFF 버튼을 눌렀을 때
     public void onClickButtonOff(View view) {
         Toast.makeText(getApplicationContext(), "ButtonOff is clicked.", Toast.LENGTH_SHORT).show();
-        webViewMain.loadUrl("192.168.0.23/off");
+        webViewMain.loadUrl("192.168.0.23/onoff?LEDstatus=1");
     }
 
     // 연결 버튼을 눌렀을 때
@@ -142,8 +130,8 @@ public class MainActivity extends AppCompatActivity {
                         alarmHour[alarmMode] = hourOfDay;
                         alarmMinute[alarmMode] = minute;
                         tvAlarmTime.setText(String.format("%02d : %02d", alarmHour[alarmMode], alarmMinute[alarmMode]));
-                        webViewForAlarm.loadUrl("javascript:setAlarm" + alarmMode
-                                        + "(" + alarmHour[alarmMode] + ", " + alarmMinute[alarmMode] + ")");
+                        webViewMain.loadUrl("192.168.0.23/setAlarm" + alarmMode + "?timeCode" + alarmMode + "="
+                                            + (alarmHour[alarmMode] * 100 + alarmMinute[alarmMode]));
                     }
                 }, alarmHour[alarmMode], alarmMinute[alarmMode], true);
         timePickerDialog.show();

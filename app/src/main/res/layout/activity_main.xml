@@ -30,13 +30,6 @@
 
         </WebView>
 
-        <WebView
-            android:id="@+id/WebViewForAlarm"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent">
-
-        </WebView>
-
         <Button
             android:id="@+id/buttonWiFi"
             android:layout_width="wrap_content"
@@ -65,12 +58,44 @@
                 android:text="알람(Alarm)" />
 
             <Switch
-                android:id="@+id/AlarmSwitch1"
+                android:id="@+id/AlarmSwitch0"
                 android:layout_width="match_parent"
                 android:layout_height="54dp"
                 android:checked="true"
                 android:onClick="onClickAlarmSwitch1"
                 android:text="점등(ON) 예약" />
+
+            <LinearLayout
+                android:id="@+id/AlarmLayout0"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:gravity="center"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:id="@+id/AlarmTime0"
+                    android:layout_width="320dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="00 : 00"
+                    android:textSize="30dp" />
+
+                <Button
+                    android:id="@+id/AlarmButton0"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:onClick="onClickAlarmButton1"
+                    android:text="알람 설정" />
+
+            </LinearLayout>
+
+            <Switch
+                android:id="@+id/AlarmSwitch1"
+                android:layout_width="match_parent"
+                android:layout_height="54dp"
+                android:checked="true"
+                android:onClick="onClickAlarmSwitch2"
+                android:text="소등(OFF) 예약" />
 
             <LinearLayout
                 android:id="@+id/AlarmLayout1"
@@ -89,38 +114,6 @@
 
                 <Button
                     android:id="@+id/AlarmButton1"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:onClick="onClickAlarmButton1"
-                    android:text="알람 설정" />
-
-            </LinearLayout>
-
-            <Switch
-                android:id="@+id/AlarmSwitch2"
-                android:layout_width="match_parent"
-                android:layout_height="54dp"
-                android:checked="true"
-                android:onClick="onClickAlarmSwitch2"
-                android:text="소등(OFF) 예약" />
-
-            <LinearLayout
-                android:id="@+id/AlarmLayout2"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:gravity="center"
-                android:orientation="horizontal">
-
-                <TextView
-                    android:id="@+id/AlarmTime2"
-                    android:layout_width="320dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:text="00 : 00"
-                    android:textSize="30dp" />
-
-                <Button
-                    android:id="@+id/AlarmButton2"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:onClick="onClickAlarmButton2"

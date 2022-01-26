@@ -14,9 +14,12 @@ Servo servo;
 #define TRIGGER_PIN 0   // trigger pin 0(D3) 2(D4)
 #define SERVO_PIN 2     // 서보모터 핀(D4)
 
+char buffer[101];
+
 String sChipId="";
 char cChipId[40]="";
 ESP8266WebServer server(80);
+
 
 int bootMode=0; //0:station  1:AP
 int LED = LED_BUILTIN;
@@ -44,11 +47,12 @@ void setup() {
   wifiManager();
 
   server.on("/", handleRoot);
-  server.on("/on", handleOn);
-  server.on("/off", handleOff);
   server.on("/scan", handleScan);
   server.on("/wifi", handleWifi);
-  server.on("/alarm", handleAlarm);
+  server.on("/onoff", handleOnOff);
+  server.on("/setAlarm0", handleSetAlarm0);
+  server.on("/setAlarm1", handleSetAlarm1);
+  
   server.onNotFound(handleNotFound);
   
   server.begin();
