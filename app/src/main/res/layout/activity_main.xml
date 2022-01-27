@@ -12,10 +12,10 @@
 
     <LinearLayout
         android:id="@+id/linearLayout2"
-        android:layout_width="380dp"
-        android:layout_height="131dp"
+        android:layout_width="373dp"
+        android:layout_height="190dp"
         android:layout_marginTop="4dp"
-        android:gravity="right|top"
+        android:gravity="center|top"
         android:orientation="vertical"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -31,10 +31,22 @@
 
         <Button
             android:id="@+id/buttonWiFi"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="271dp"
+            android:layout_height="74dp"
+            android:layout_marginBottom="25dp"
+            android:backgroundTint="@android:color/holo_green_dark"
             android:onClick="onClickButtonConnect"
-            android:text="Wi-Fi 연결하기" />
+            android:text="Wi-Fi 설정\n(Configure WiFi)"
+            android:textAllCaps="false"
+            android:textSize="16sp"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/textView2"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="서버 주소(Server Address)"
+            android:textSize="14dp" />
 
         <EditText
             android:id="@+id/IP_Address"
@@ -173,8 +185,9 @@
                 android:layout_marginLeft="15dp"
                 android:layout_marginRight="15dp"
                 android:onClick="onClickButtonOn"
+                android:textAllCaps="false"
                 android:text="ON"
-                android:textSize="20dp" />
+                android:textSize="20dp"/>
 
             <Button
                 android:id="@+id/actionButton1"
@@ -183,6 +196,7 @@
                 android:layout_marginLeft="15dp"
                 android:layout_marginRight="15dp"
                 android:onClick="onClickButtonOff"
+                android:textAllCaps="false"
                 android:text="OFF"
                 android:textSize="20dp" />
         </LinearLayout>

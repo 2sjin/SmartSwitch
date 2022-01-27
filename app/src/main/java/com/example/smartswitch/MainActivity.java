@@ -7,15 +7,20 @@ import android.app.TimePickerDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.Typeface;
 import android.net.ConnectivityManager;
 import android.net.DhcpInfo;
 import android.net.NetworkInfo;
 import android.net.wifi.WifiInfo;
 import android.net.wifi.WifiManager;
+import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.webkit.WebResourceError;
+import android.webkit.WebResourceRequest;
 import android.webkit.WebView;
+import android.webkit.WebViewClient;
 import android.widget.*;
 
 import java.math.BigInteger;
@@ -33,6 +38,8 @@ public class MainActivity extends AppCompatActivity {
 
     Button actionButton0;
     Button actionButton1;
+    Button alarmButton0;
+    Button alarmButton1;
     Button alarmResetButton0;
     Button alarmResetButton1;
     LinearLayout alarmLayout0;
@@ -52,6 +59,8 @@ public class MainActivity extends AppCompatActivity {
 
         actionButton0 = findViewById(R.id.actionButton0);
         actionButton1 = findViewById(R.id.actionButton1);
+        alarmButton0 = findViewById(R.id.AlarmButton0);
+        alarmButton1 = findViewById(R.id.AlarmButton1);
         alarmResetButton0 = findViewById(R.id.AlarmResetButton0);
         alarmResetButton1 = findViewById(R.id.AlarmResetButton1);
         alarmLayout0 = findViewById(R.id.AlarmLayout0);
@@ -80,6 +89,24 @@ public class MainActivity extends AppCompatActivity {
                 return true;
             }
         });
+
+        // 웹뷰 클라이언트 연결 오류 시
+        webViewMain.setWebViewClient(new WebViewClient() {
+            @Override
+            public void onReceivedError(WebView view, WebResourceRequest request, WebResourceError error) {
+                super.onReceivedError(view, request, error);
+                showErrorDialog("WiFi(SmartSwitch) 연결 후 앱을 재실행하여\n[Configure WiFi]를 진행하시기 바랍니다.");
+                Intent intent = new Intent(getApplicationContext(), WifiManagerActivity.class);
+                startActivity(intent);
+            }
+        });
+    }
+
+    // 액티비티 재개 시
+    @Override
+    protected void onResume() {
+        super.onResume();
+        webViewMain.loadUrl(ip);
     }
 
     // 뒤로가기 버튼을 눌렀을 때
@@ -122,19 +149,16 @@ public class MainActivity extends AppCompatActivity {
     // ON 버튼을 눌렀을 때
     public void onClickButtonOn(View view) {
         ip = String.valueOf(editTextIP.getText());
-        Toast.makeText(getApplicationContext(), "ButtonOn is clicked.", Toast.LENGTH_SHORT).show();
         webViewMain.loadUrl(ip + "/onoff?LEDstatus=0");
     }
-
 
     // OFF 버튼을 눌렀을 때
     public void onClickButtonOff(View view) {
         ip = String.valueOf(editTextIP.getText());
-        Toast.makeText(getApplicationContext(), "ButtonOff is clicked.", Toast.LENGTH_SHORT).show();
         webViewMain.loadUrl(ip + "/onoff?LEDstatus=1");
     }
 
-    // 연결 버튼을 눌렀을 때
+    // Wi-Fi 연결 버튼을 눌렀을 때
     public void onClickButtonConnect(View view) {
         Intent intent = new Intent(getApplicationContext(), WifiManagerActivity.class);
         startActivity(intent);
@@ -186,9 +210,9 @@ public class MainActivity extends AppCompatActivity {
     public void showEditNameDialog(Button btn, TextView tv) {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         EditText et = new EditText(this);
+        et.setText(btn.getText());
         builder.setView(et);
         builder.setTitle("변경할 텍스트 입력");
-        builder.setMessage(btn.getText());
         builder.setCancelable(true);
         builder.setPositiveButton("OK",  new DialogInterface.OnClickListener() {
             @Override
