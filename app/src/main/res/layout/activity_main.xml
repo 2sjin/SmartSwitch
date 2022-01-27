@@ -21,18 +21,11 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
-        <WebView
-            android:id="@+id/WebViewMain"
-            android:layout_width="match_parent"
-            android:layout_height="123dp"
-            android:visibility="gone">
-
-        </WebView>
-
         <Button
             android:id="@+id/buttonWiFi"
             android:layout_width="271dp"
             android:layout_height="74dp"
+            android:layout_marginTop="20dp"
             android:layout_marginBottom="25dp"
             android:backgroundTint="@android:color/holo_green_dark"
             android:onClick="onClickButtonConnect"
@@ -40,6 +33,14 @@
             android:textAllCaps="false"
             android:textSize="16sp"
             android:textStyle="bold" />
+
+        <WebView
+            android:id="@+id/WebViewMain"
+            android:layout_width="match_parent"
+            android:layout_height="123dp"
+            android:visibility="gone">
+
+        </WebView>
 
         <TextView
             android:id="@+id/textView2"
@@ -59,145 +60,147 @@
 
     </LinearLayout>
 
-    <ScrollView
-        android:layout_width="383dp"
-        android:layout_height="287dp"
+    <LinearLayout
+        android:id="@+id/AlarmGroupLayout"
+        android:layout_width="381dp"
+        android:layout_height="181dp"
+        android:layout_marginTop="15dp"
+        android:orientation="vertical"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/linearLayout2">
 
-        <LinearLayout
-            android:id="@+id/AlarmGroupLayout"
+        <TextView
+            android:id="@+id/tvAlarm0"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical">
+            android:text="◆ 알람: ON"
+            android:textSize="20dp" />
+
+        <LinearLayout
+            android:id="@+id/AlarmLayout0"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="20dp"
+            android:gravity="center"
+            android:orientation="horizontal">
 
             <TextView
-                android:id="@+id/tvAlarm0"
-                android:layout_width="match_parent"
+                android:id="@+id/AlarmTime0"
+                android:layout_width="320dp"
                 android:layout_height="wrap_content"
-                android:text="◆ 알람: ON"
-                android:textSize="20dp" />
+                android:layout_weight="1"
+                android:text="No Alarm"
+                android:textSize="30dp" />
 
-            <LinearLayout
-                android:id="@+id/AlarmLayout0"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_marginBottom="30dp"
-                android:gravity="center"
-                android:orientation="horizontal">
-
-                <TextView
-                    android:id="@+id/AlarmTime0"
-                    android:layout_width="320dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:text="No Alarm"
-                    android:textSize="30dp" />
-
-                <Button
-                    android:id="@+id/AlarmButton0"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginRight="10dp"
-                    android:onClick="onClickAlarmButton0"
-                    android:text="알람 설정" />
-
-                <Button
-                    android:id="@+id/AlarmResetButton0"
-                    android:layout_width="64dp"
-                    android:layout_height="wrap_content"
-                    android:layout_marginRight="10dp"
-                    android:onClick="onClickAlarmResetButton0"
-                    android:text="끄기" />
-
-            </LinearLayout>
-
-            <TextView
-                android:id="@+id/tvAlarm1"
-                android:layout_width="match_parent"
+            <Button
+                android:id="@+id/AlarmButton0"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="◆ 알람: OFF"
-                android:textSize="20dp" />
+                android:layout_marginRight="10dp"
+                android:onClick="onClickAlarmButton0"
+                android:text="알람 설정" />
 
-            <LinearLayout
-                android:id="@+id/AlarmLayout1"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:gravity="center"
-                android:orientation="horizontal">
-
-                <TextView
-                    android:id="@+id/AlarmTime1"
-                    android:layout_width="320dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:text="No Alarm"
-                    android:textSize="30dp" />
-
-                <Button
-                    android:id="@+id/AlarmButton1"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginRight="10dp"
-                    android:onClick="onClickAlarmButton1"
-                    android:text="알람 설정" />
-
-                <Button
-                    android:id="@+id/AlarmResetButton1"
-                    android:layout_width="64dp"
-                    android:layout_height="wrap_content"
-                    android:layout_marginRight="10dp"
-                    android:onClick="onClickAlarmResetButton1"
-                    android:text="끄기" />
-            </LinearLayout>
+            <Button
+                android:id="@+id/AlarmResetButton0"
+                android:layout_width="64dp"
+                android:layout_height="wrap_content"
+                android:layout_marginRight="10dp"
+                android:onClick="onClickAlarmResetButton0"
+                android:text="끄기" />
 
         </LinearLayout>
-    </ScrollView>
+
+        <TextView
+            android:id="@+id/tvAlarm1"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="◆ 알람: OFF"
+            android:textSize="20dp" />
+
+        <LinearLayout
+            android:id="@+id/AlarmLayout1"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:orientation="horizontal">
+
+            <TextView
+                android:id="@+id/AlarmTime1"
+                android:layout_width="320dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="No Alarm"
+                android:textSize="30dp" />
+
+            <Button
+                android:id="@+id/AlarmButton1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginRight="10dp"
+                android:onClick="onClickAlarmButton1"
+                android:text="알람 설정" />
+
+            <Button
+                android:id="@+id/AlarmResetButton1"
+                android:layout_width="64dp"
+                android:layout_height="wrap_content"
+                android:layout_marginRight="10dp"
+                android:onClick="onClickAlarmResetButton1"
+                android:text="끄기" />
+        </LinearLayout>
+
+    </LinearLayout>
 
     <LinearLayout
         android:id="@+id/linearLayout"
         android:layout_width="379dp"
         android:layout_height="196dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginBottom="1dp"
+        android:background="@android:color/darker_gray"
         android:gravity="center"
         android:orientation="vertical"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent">
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/AlarmGroupLayout"
+        app:layout_constraintVertical_bias="0.138">
 
         <TextView
             android:id="@+id/textView"
             android:layout_width="355dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
+            android:layout_height="40dp"
             android:gravity="center"
-            android:text="버튼을 길게 눌러 텍스트를 변경할 수 있습니다." />
+            android:text="버튼을 길게 눌러 텍스트를 변경할 수 있습니다."
+            android:textColor="@color/black" />
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="158dp"
+            android:layout_height="137dp"
             android:orientation="horizontal">
 
             <Button
                 android:id="@+id/actionButton0"
                 android:layout_width="160dp"
-                android:layout_height="120dp"
+                android:layout_height="130dp"
                 android:layout_marginLeft="15dp"
                 android:layout_marginRight="15dp"
                 android:onClick="onClickButtonOn"
-                android:textAllCaps="false"
                 android:text="ON"
-                android:textSize="20dp"/>
+                android:textAllCaps="false"
+                android:textSize="20dp" />
 
             <Button
                 android:id="@+id/actionButton1"
                 android:layout_width="160dp"
-                android:layout_height="120dp"
+                android:layout_height="130dp"
                 android:layout_marginLeft="15dp"
                 android:layout_marginRight="15dp"
                 android:onClick="onClickButtonOff"
-                android:textAllCaps="false"
                 android:text="OFF"
+                android:textAllCaps="false"
                 android:textSize="20dp" />
         </LinearLayout>
 

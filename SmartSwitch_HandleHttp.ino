@@ -9,12 +9,11 @@ void handleRoot() {
 
   s += "<FORM method='get' action='onoff'>";
   s += "<p><button type='submit' name='LEDstatus' value='1' style='background-color:Lime; color:blue;'>켜짐 on</button></p>";
-  s += "&nbsp&nbsp";
   s += "<p><button type='submit' name='LEDstatus' value='0' style='background-color:Gray; color:blue;'>꺼짐 off</button></p>";
   s += "</FORM>";
   
   s += "<br><br>AP & IP :&emsp;"+sChipId+"&emsp;<a href='http://"+WiFi.localIP().toString()+"'/>"+WiFi.localIP().toString()+"</a>";
-  s += "<p><a href='/wifi'>네트웍공유기변경-누른후 와이파설정부터 다시하세요</a></p>";
+  s += "<p><a href='/wifi'>Wi-Fi 재설정(Reset)</a></p>";
 
   server.send(200, "text/html", s);
 }

@@ -44,7 +44,7 @@ public class MainActivity extends AppCompatActivity {
     int [] alarmHour = new int[2];
     int [] alarmMinute = new int[2];
 
-    Button actionButton0, actionButton1;
+    Button actionButton0, actionButton1, buttonWiFi;
     Button alarmButton0, alarmButton1, alarmResetButton0, alarmResetButton1;
     LinearLayout alarmLayout0, alarmLayout1;
     TextView tvAlarm0, tvAlarm1, alarmTime0, alarmTime1;
@@ -62,6 +62,7 @@ public class MainActivity extends AppCompatActivity {
 
         actionButton0 = findViewById(R.id.actionButton0);
         actionButton1 = findViewById(R.id.actionButton1);
+        buttonWiFi = findViewById(R.id.buttonWiFi);
         alarmButton0 = findViewById(R.id.AlarmButton0);
         alarmButton1 = findViewById(R.id.AlarmButton1);
         alarmResetButton0 = findViewById(R.id.AlarmResetButton0);
@@ -97,6 +98,15 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public boolean onLongClick(View view) {
                 showEditNameDialog(1, actionButton1, tvAlarm1);
+                return true;
+            }
+        });
+
+        // Wi-Fi 설정 버튼 길게 눌렀을 때
+        buttonWiFi.setOnLongClickListener(new View.OnLongClickListener() {
+            @Override
+            public boolean onLongClick(View view) {
+                showWiFiResetDialog();
                 return true;
             }
         });
@@ -213,6 +223,28 @@ public class MainActivity extends AppCompatActivity {
         String ipString = String.format("%d.%d.%d.%d",
                 (ipAddress & 0xff),(ipAddress >> 8 & 0xff),(ipAddress >> 16 & 0xff),(ipAddress >> 24 & 0xff));
         return ipString;
+    }
+
+    // WiFi 재설정 다이얼로그 출력
+    public void showWiFiResetDialog() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle("Wi-Fi 연결 해제");
+        builder.setMessage("현재 접속 중인 Wi-Fi 네트워크와의 연결을 해제할까요?");
+        builder.setCancelable(false);
+        builder.setPositiveButton("YES",  new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                webViewMain.loadUrl(ip + "/wifi");
+                dialog.dismiss();
+            }
+        });
+        builder.setNegativeButton("NO",  new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.dismiss();
+            }
+        });
+        builder.create().show();
     }
 
     // 접속 오류 다이얼로그 출력
