@@ -7,6 +7,7 @@ import android.app.TimePickerDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Typeface;
 import android.net.ConnectivityManager;
 import android.net.DhcpInfo;
@@ -16,6 +17,8 @@ import android.net.wifi.WifiManager;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Process;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.Log;
 import android.view.View;
 import android.webkit.WebResourceError;
@@ -30,25 +33,21 @@ import java.net.UnknownHostException;
 import java.nio.ByteOrder;
 
 public class MainActivity extends AppCompatActivity {
+    String [] STR_MACRO = {"Unknown Data", "Alarm Off"};
     String ip = "192.168.0.23";
+
+    SharedPreferences pref;
+    SharedPreferences.Editor editor;
 
     private static long back_pressed;
     int alarmMode;
     int [] alarmHour = new int[2];
     int [] alarmMinute = new int[2];
 
-    Button actionButton0;
-    Button actionButton1;
-    Button alarmButton0;
-    Button alarmButton1;
-    Button alarmResetButton0;
-    Button alarmResetButton1;
-    LinearLayout alarmLayout0;
-    LinearLayout alarmLayout1;
-    TextView tvAlarm0;
-    TextView tvAlarm1;
-    TextView alarmTime0;
-    TextView alarmTime1;
+    Button actionButton0, actionButton1;
+    Button alarmButton0, alarmButton1, alarmResetButton0, alarmResetButton1;
+    LinearLayout alarmLayout0, alarmLayout1;
+    TextView tvAlarm0, tvAlarm1, alarmTime0, alarmTime1;
     WebView webViewMain;
     EditText editTextIP;
 
@@ -57,6 +56,9 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        pref = getSharedPreferences("SMART_SWITCH", Context.MODE_PRIVATE);
+        editor = pref.edit();
 
         actionButton0 = findViewById(R.id.actionButton0);
         actionButton1 = findViewById(R.id.actionButton1);
@@ -73,11 +75,19 @@ public class MainActivity extends AppCompatActivity {
         webViewMain = findViewById(R.id.WebViewMain);
         editTextIP = findViewById(R.id.IP_Address);
 
+        actionButton0.setText(pref.getString("name_act0", "ON"));
+        actionButton1.setText(pref.getString("name_act1", "OFF"));
+        tvAlarm0.setText("◆ 알람: " + pref.getString("name_act0", "ON"));
+        tvAlarm1.setText("◆ 알람: " + pref.getString("name_act1", "OFF"));
+        alarmTime0.setText(pref.getString("alarm0", STR_MACRO[0]));
+        alarmTime1.setText(pref.getString("alarm1", STR_MACRO[0]));
+        editTextIP.setText(pref.getString("server_ip", "192.168.0.23"));
+
         // 버튼 0 길게 눌렀을 때
         actionButton0.setOnLongClickListener(new View.OnLongClickListener() {
             @Override
             public boolean onLongClick(View view) {
-                showEditNameDialog(actionButton0, tvAlarm0);
+                showEditNameDialog(0, actionButton0, tvAlarm0);
                 return true;
             }
         });
@@ -86,7 +96,7 @@ public class MainActivity extends AppCompatActivity {
         actionButton1.setOnLongClickListener(new View.OnLongClickListener() {
             @Override
             public boolean onLongClick(View view) {
-                showEditNameDialog(actionButton1, tvAlarm1);
+                showEditNameDialog(1, actionButton1, tvAlarm1);
                 return true;
             }
         });
@@ -96,7 +106,27 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onReceivedError(WebView view, WebResourceRequest request, WebResourceError error) {
                 super.onReceivedError(view, request, error);
+                alarmTime0.setText(STR_MACRO[0]);
+                alarmTime1.setText(STR_MACRO[0]);
+                editor.putString("alarm0", STR_MACRO[0]);
+                editor.putString("alarm1", STR_MACRO[0]);
+                editor.commit();
                 showConnectionErrorDialog();
+            }
+        });
+
+        // 하이
+        editTextIP.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) { }
+
+            @Override
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) { }
+
+            @Override
+            public void afterTextChanged(Editable editable) {
+                editor.putString("server_ip", editable.toString());
+                editor.commit();
             }
         });
     }
@@ -129,16 +159,20 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-    // 알람 스위치 0 눌렀을 때
+    // 알람 끄기 버튼 0 눌렀을 때
     public void onClickAlarmResetButton0 (View view) {
-        webViewMain.loadUrl(ip + "/setAlarm" + alarmMode + "?timeCode0=noAlarm");
-        alarmTime0.setText("No Alarm");
+        webViewMain.loadUrl(ip + "/setAlarm0?timeCode0=noAlarm");
+        alarmTime0.setText(STR_MACRO[1]);
+        editor.putString("alarm0", STR_MACRO[1]);
+        editor.commit();
     }
 
-    // 알람 스위치 1 눌렀을 때
+    // 알람 끄기 버튼 1 눌렀을 때
     public void onClickAlarmResetButton1 (View view) {
-        webViewMain.loadUrl(ip + "/setAlarm" + alarmMode + "?timeCode1=noAlarm");
-        alarmTime1.setText("No Alarm");
+        webViewMain.loadUrl(ip + "/setAlarm1?timeCode1=noAlarm");
+        alarmTime1.setText(STR_MACRO[1]);
+        editor.putString("alarm1", STR_MACRO[1]);
+        editor.commit();
     }
 
     // 알람 설정 버튼 0 눌렀을 때
@@ -169,6 +203,16 @@ public class MainActivity extends AppCompatActivity {
     public void onClickButtonConnect(View view) {
         Intent intent = new Intent(getApplicationContext(), WifiManagerActivity.class);
         startActivity(intent);
+    }
+
+    // 현재 접속 중인 WiFi의 IP 주소 리턴
+    public String getIpAddressOfWifi(Context context) {
+        WifiManager wifiManager = (WifiManager) getApplicationContext().getSystemService(Context.WIFI_SERVICE);
+        WifiInfo connectionInfo = wifiManager.getConnectionInfo();
+        int ipAddress = connectionInfo.getIpAddress();
+        String ipString = String.format("%d.%d.%d.%d",
+                (ipAddress & 0xff),(ipAddress >> 8 & 0xff),(ipAddress >> 16 & 0xff),(ipAddress >> 24 & 0xff));
+        return ipString;
     }
 
     // 접속 오류 다이얼로그 출력
@@ -212,7 +256,10 @@ public class MainActivity extends AppCompatActivity {
                     public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
                         alarmHour[alarmMode] = hourOfDay;
                         alarmMinute[alarmMode] = minute;
-                        tvAlarmTime.setText(String.format("%02d : %02d", alarmHour[alarmMode], alarmMinute[alarmMode]));
+                        String tempStr = String.format("%02d : %02d", alarmHour[alarmMode], alarmMinute[alarmMode]);
+                        tvAlarmTime.setText(tempStr);
+                        editor.putString("alarm" + alarmMode, tempStr);
+                        editor.commit();
                         webViewMain.loadUrl(ip + "/setAlarm" + alarmMode + "?timeCode" + alarmMode + "="
                                             + (alarmHour[alarmMode] * 100 + alarmMinute[alarmMode]));
                     }
@@ -220,18 +267,8 @@ public class MainActivity extends AppCompatActivity {
         timePickerDialog.show();
     }
 
-    // 현재 접속 중인 WiFi의 IP 주소 리턴
-    public String getIpAddressOfWifi(Context context) {
-        WifiManager wifiManager = (WifiManager) getApplicationContext().getSystemService(Context.WIFI_SERVICE);
-        WifiInfo connectionInfo = wifiManager.getConnectionInfo();
-        int ipAddress = connectionInfo.getIpAddress();
-        String ipString = String.format("%d.%d.%d.%d",
-                (ipAddress & 0xff),(ipAddress >> 8 & 0xff),(ipAddress >> 16 & 0xff),(ipAddress >> 24 & 0xff));
-        return ipString;
-    }
-
     // 버튼 및 알람 이름 변경을 위한 입력 다이얼로그 출력
-    public void showEditNameDialog(Button btn, TextView tv) {
+    public void showEditNameDialog(int flag, Button btn, TextView tv) {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         EditText et = new EditText(this);
         et.setText(btn.getText());
@@ -243,6 +280,8 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(DialogInterface dialog, int which) {
                 btn.setText(et.getText());
                 tv.setText("◆ 알람: " + et.getText());
+                editor.putString("name_act" + flag, String.valueOf(et.getText()));
+                editor.commit();
                 dialog.dismiss();
             }
         });

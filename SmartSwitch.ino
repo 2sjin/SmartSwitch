@@ -20,6 +20,8 @@ String timeCode[2] = {"", ""};
 char curTime[20]; 
 struct tm *t;
 
+int angle = 90; // 서보모터 초기 각도 값
+
 int bootMode=0; //0:station  1:AP
 int LED = LED_BUILTIN;
 unsigned long now,lastConnectTry = 0,count=0;

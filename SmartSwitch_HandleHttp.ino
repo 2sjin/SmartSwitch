@@ -19,7 +19,6 @@ void handleRoot() {
   server.send(200, "text/html", s);
 }
 
-
 void handleWifi() {
   WiFiManager wm;
   wm.resetSettings();
@@ -65,7 +64,6 @@ void handleOnOff() {
       GoHome();
     }
     else if (value == "1") {
-
       digitalWrite(LED, HIGH);
       setServo1();
       GoHome();
@@ -78,13 +76,27 @@ void handleOnOff() {
 }
 
 void setServo0() {
-  Serial.println("서보모터 0 동작");
-  servo.write(0);
+  Serial.print("서보모터 0 동작(+40)\t");
+  for(int i = 0; i < 40; i++) {  // 현재 각도에서 40도 더해주기
+    angle = angle + 1;   
+    if(angle >= 180)
+      angle = 180;  
+    servo.write(angle); 
+    delay(10);
+  }
+  Serial.println(angle);  // 현재 각도 출력
 }
 
 void setServo1() {
-  Serial.println("서보모터 1 동작");
-  servo.write(100);
+  Serial.print("서보모터 1 동작(-40)\t");
+  for(int i = 0 ; i < 40 ; i++) {  // 현재 각도에서 40도 빼주기
+    angle = angle - 1;
+    if(angle <= 0)
+      angle = 0;
+    servo.write(angle);
+    delay(10);
+  }
+  Serial.println(angle);  // 현재 각도 출력
 }
 
 void handleSetAlarm0() { setAlarm(0); }
