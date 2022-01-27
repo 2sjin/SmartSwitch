@@ -33,6 +33,7 @@ public class WifiManagerActivity extends AppCompatActivity {
             Toast.makeText(getBaseContext(), "처음 페이지 입니다.", Toast.LENGTH_SHORT).show();
     }
 
+    public void onclickButtonReload(View view) { wmWebView.reload(); }
     public void onclickButtonExit(View view) {
         super.onBackPressed();
     }

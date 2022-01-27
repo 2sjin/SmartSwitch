@@ -15,6 +15,7 @@ import android.net.wifi.WifiInfo;
 import android.net.wifi.WifiManager;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Process;
 import android.util.Log;
 import android.view.View;
 import android.webkit.WebResourceError;
@@ -95,9 +96,7 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onReceivedError(WebView view, WebResourceRequest request, WebResourceError error) {
                 super.onReceivedError(view, request, error);
-                showErrorDialog("WiFi(SmartSwitch) 연결 후 앱을 재실행하여\n[Configure WiFi]를 진행하시기 바랍니다.");
-                Intent intent = new Intent(getApplicationContext(), WifiManagerActivity.class);
-                startActivity(intent);
+                showConnectionErrorDialog();
             }
         });
     }
@@ -107,6 +106,14 @@ public class MainActivity extends AppCompatActivity {
     protected void onResume() {
         super.onResume();
         webViewMain.loadUrl(ip);
+    }
+
+    // 액티비티 종료 시
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        finishAndRemoveTask();
+        Process.killProcess(Process.myPid());
     }
 
     // 뒤로가기 버튼을 눌렀을 때
@@ -164,18 +171,35 @@ public class MainActivity extends AppCompatActivity {
         startActivity(intent);
     }
 
-    // 에러 다이얼로그 출력
-    public void showErrorDialog(String message) {
+    // 접속 오류 다이얼로그 출력
+    public void showConnectionErrorDialog() {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        builder.setTitle("Error");
-        builder.setMessage(message);
+        builder.setTitle("서버 접속 실패");
+        builder.setMessage("단말기 WiFi(SmartSwitch) 연결 후,\nWIFI 설정(Configure WiFi)을 진행하시기 바랍니다.");
         builder.setCancelable(false);
-        builder.setPositiveButton("OK",  new DialogInterface.OnClickListener() {
+        builder.setPositiveButton("WIFI 설정",  new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
+                Intent intent = new Intent(getApplicationContext(), WifiManagerActivity.class);
+                startActivity(intent);
                 dialog.dismiss();
             }
         });
+        builder.setNegativeButton("재접속",  new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                webViewMain.loadUrl(ip);
+                dialog.dismiss();
+            }
+        });
+        builder.setNeutralButton("앱 종료",  new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                onDestroy();
+                dialog.dismiss();
+            }
+        });
+
         builder.create().show();
     }
 

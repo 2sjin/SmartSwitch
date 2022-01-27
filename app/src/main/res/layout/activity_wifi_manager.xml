@@ -22,23 +22,34 @@
 
         <Button
             android:id="@+id/buttonBack"
-            android:layout_width="160dp"
+            android:layout_width="110dp"
             android:layout_height="70dp"
-            android:layout_marginLeft="15dp"
-            android:layout_marginRight="15dp"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="5dp"
             android:onClick="onclickButtonBack"
-            android:text="뒤로(BACK)"
+            android:text="뒤로\n(BACK)"
+            android:textSize="18dp" />
+
+        <Button
+            android:id="@+id/buttonReload"
+            android:layout_width="wrap_content"
+            android:layout_height="70dp"
+            android:layout_marginLeft="5dp"
+            android:layout_marginRight="5dp"
+            android:layout_weight="1"
+            android:onClick="onclickButtonReload"
+            android:text="새로고침\n(RELOAD)"
             android:textSize="18dp" />
 
         <Button
             android:id="@+id/buttonExit"
-            android:layout_width="160dp"
+            android:layout_width="110dp"
             android:layout_height="70dp"
-            android:layout_marginLeft="15dp"
-            android:layout_marginRight="15dp"
+            android:layout_marginLeft="5dp"
+            android:layout_marginRight="10dp"
             android:backgroundTint="@android:color/holo_orange_dark"
             android:onClick="onclickButtonExit"
-            android:text="나가기(EXIT)"
+            android:text="나가기\n(EXIT)"
             android:textSize="18dp" />
     </LinearLayout>
 </LinearLayout>
