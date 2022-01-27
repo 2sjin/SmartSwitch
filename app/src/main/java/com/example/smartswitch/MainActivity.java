@@ -230,7 +230,7 @@ public class MainActivity extends AppCompatActivity {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setTitle("Wi-Fi 연결 해제");
         builder.setMessage("현재 접속 중인 Wi-Fi 네트워크와의 연결을 해제할까요?");
-        builder.setCancelable(false);
+        builder.setCancelable(true);
         builder.setPositiveButton("YES",  new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
