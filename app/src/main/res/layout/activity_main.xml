@@ -18,7 +18,6 @@
         android:gravity="right|top"
         android:orientation="vertical"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
@@ -65,8 +64,8 @@
                 android:id="@+id/tvAlarm0"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="알람 0"
-                android:textSize="16dp"/>
+                android:text="◆ 알람: ON"
+                android:textSize="20dp" />
 
             <LinearLayout
                 android:id="@+id/AlarmLayout0"
@@ -94,7 +93,7 @@
 
                 <Button
                     android:id="@+id/AlarmResetButton0"
-                    android:layout_width="wrap_content"
+                    android:layout_width="64dp"
                     android:layout_height="wrap_content"
                     android:layout_marginRight="10dp"
                     android:onClick="onClickAlarmResetButton0"
@@ -106,8 +105,8 @@
                 android:id="@+id/tvAlarm1"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="알람 1"
-                android:textSize="16dp"/>
+                android:text="◆ 알람: OFF"
+                android:textSize="20dp" />
 
             <LinearLayout
                 android:id="@+id/AlarmLayout1"
@@ -134,7 +133,7 @@
 
                 <Button
                     android:id="@+id/AlarmResetButton1"
-                    android:layout_width="wrap_content"
+                    android:layout_width="64dp"
                     android:layout_height="wrap_content"
                     android:layout_marginRight="10dp"
                     android:onClick="onClickAlarmResetButton1"
@@ -145,33 +144,48 @@
     </ScrollView>
 
     <LinearLayout
+        android:id="@+id/linearLayout"
         android:layout_width="379dp"
         android:layout_height="196dp"
         android:gravity="center"
-        android:orientation="horizontal"
+        android:orientation="vertical"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent">
 
-        <Button
-            android:id="@+id/buttonOn"
-            android:layout_width="160dp"
-            android:layout_height="120dp"
-            android:layout_marginLeft="15dp"
-            android:layout_marginRight="15dp"
-            android:onClick="onClickButtonOn"
-            android:text="켜기\n(ON)"
-            android:textSize="20dp" />
+        <TextView
+            android:id="@+id/textView"
+            android:layout_width="355dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:text="버튼을 길게 눌러 텍스트를 변경할 수 있습니다." />
 
-        <Button
-            android:id="@+id/buttonOff"
-            android:layout_width="160dp"
-            android:layout_height="120dp"
-            android:layout_marginLeft="15dp"
-            android:layout_marginRight="15dp"
-            android:onClick="onClickButtonOff"
-            android:text="끄기\n(OFF)"
-            android:textSize="20dp" />
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="158dp"
+            android:orientation="horizontal">
+
+            <Button
+                android:id="@+id/actionButton0"
+                android:layout_width="160dp"
+                android:layout_height="120dp"
+                android:layout_marginLeft="15dp"
+                android:layout_marginRight="15dp"
+                android:onClick="onClickButtonOn"
+                android:text="ON"
+                android:textSize="20dp" />
+
+            <Button
+                android:id="@+id/actionButton1"
+                android:layout_width="160dp"
+                android:layout_height="120dp"
+                android:layout_marginLeft="15dp"
+                android:layout_marginRight="15dp"
+                android:onClick="onClickButtonOff"
+                android:text="OFF"
+                android:textSize="20dp" />
+        </LinearLayout>
 
     </LinearLayout>
 

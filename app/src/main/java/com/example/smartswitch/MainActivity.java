@@ -31,10 +31,14 @@ public class MainActivity extends AppCompatActivity {
     int [] alarmHour = new int[2];
     int [] alarmMinute = new int[2];
 
+    Button actionButton0;
+    Button actionButton1;
     Button alarmResetButton0;
     Button alarmResetButton1;
     LinearLayout alarmLayout0;
     LinearLayout alarmLayout1;
+    TextView tvAlarm0;
+    TextView tvAlarm1;
     TextView alarmTime0;
     TextView alarmTime1;
     WebView webViewMain;
@@ -46,14 +50,36 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        actionButton0 = findViewById(R.id.actionButton0);
+        actionButton1 = findViewById(R.id.actionButton1);
         alarmResetButton0 = findViewById(R.id.AlarmResetButton0);
         alarmResetButton1 = findViewById(R.id.AlarmResetButton1);
         alarmLayout0 = findViewById(R.id.AlarmLayout0);
         alarmLayout1 = findViewById(R.id.AlarmLayout1);
+        tvAlarm0 = findViewById(R.id.tvAlarm0);
+        tvAlarm1 = findViewById(R.id.tvAlarm1);
         alarmTime0 = findViewById(R.id.AlarmTime0);
         alarmTime1 = findViewById(R.id.AlarmTime1);
         webViewMain = findViewById(R.id.WebViewMain);
         editTextIP = findViewById(R.id.IP_Address);
+
+        // 버튼 0 길게 눌렀을 때
+        actionButton0.setOnLongClickListener(new View.OnLongClickListener() {
+            @Override
+            public boolean onLongClick(View view) {
+                showEditNameDialog(actionButton0, tvAlarm0);
+                return true;
+            }
+        });
+
+        // 버튼 1 길게 눌렀을 때
+        actionButton1.setOnLongClickListener(new View.OnLongClickListener() {
+            @Override
+            public boolean onLongClick(View view) {
+                showEditNameDialog(actionButton1, tvAlarm1);
+                return true;
+            }
+        });
     }
 
     // 뒤로가기 버튼을 눌렀을 때
@@ -118,8 +144,8 @@ public class MainActivity extends AppCompatActivity {
     public void showErrorDialog(String message) {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setTitle("Error");
-        builder.setCancelable(false);
         builder.setMessage(message);
+        builder.setCancelable(false);
         builder.setPositiveButton("OK",  new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
@@ -154,6 +180,31 @@ public class MainActivity extends AppCompatActivity {
         String ipString = String.format("%d.%d.%d.%d",
                 (ipAddress & 0xff),(ipAddress >> 8 & 0xff),(ipAddress >> 16 & 0xff),(ipAddress >> 24 & 0xff));
         return ipString;
+    }
+
+    // 버튼 및 알람 이름 변경을 위한 입력 다이얼로그 출력
+    public void showEditNameDialog(Button btn, TextView tv) {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        EditText et = new EditText(this);
+        builder.setView(et);
+        builder.setTitle("변경할 텍스트 입력");
+        builder.setMessage(btn.getText());
+        builder.setCancelable(true);
+        builder.setPositiveButton("OK",  new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                btn.setText(et.getText());
+                tv.setText("◆ 알람: " + et.getText());
+                dialog.dismiss();
+            }
+        });
+        builder.setNegativeButton("Cancel",  new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.dismiss();
+            }
+        });
+        builder.create().show();
     }
 
 }
