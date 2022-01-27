@@ -12,8 +12,8 @@
 
     <LinearLayout
         android:id="@+id/linearLayout2"
-        android:layout_width="match_parent"
-        android:layout_height="103dp"
+        android:layout_width="380dp"
+        android:layout_height="131dp"
         android:layout_marginTop="4dp"
         android:gravity="right|top"
         android:orientation="vertical"
@@ -37,6 +37,15 @@
             android:onClick="onClickButtonConnect"
             android:text="Wi-Fi 연결하기" />
 
+        <EditText
+            android:id="@+id/IP_Address"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:ems="10"
+            android:inputType="textPersonName"
+            android:minHeight="48dp"
+            android:text="192.168.0.23" />
+
     </LinearLayout>
 
     <ScrollView
@@ -53,22 +62,17 @@
             android:orientation="vertical">
 
             <TextView
+                android:id="@+id/tvAlarm0"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="알람(Alarm)" />
-
-            <Switch
-                android:id="@+id/AlarmSwitch0"
-                android:layout_width="match_parent"
-                android:layout_height="54dp"
-                android:checked="true"
-                android:onClick="onClickAlarmSwitch1"
-                android:text="점등(ON) 예약" />
+                android:text="알람 0"
+                android:textSize="16dp"/>
 
             <LinearLayout
                 android:id="@+id/AlarmLayout0"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
+                android:layout_marginBottom="30dp"
                 android:gravity="center"
                 android:orientation="horizontal">
 
@@ -77,25 +81,33 @@
                     android:layout_width="320dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:text="00 : 00"
+                    android:text="No Alarm"
                     android:textSize="30dp" />
 
                 <Button
                     android:id="@+id/AlarmButton0"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:onClick="onClickAlarmButton1"
+                    android:layout_marginRight="10dp"
+                    android:onClick="onClickAlarmButton0"
                     android:text="알람 설정" />
+
+                <Button
+                    android:id="@+id/AlarmResetButton0"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginRight="10dp"
+                    android:onClick="onClickAlarmResetButton0"
+                    android:text="끄기" />
 
             </LinearLayout>
 
-            <Switch
-                android:id="@+id/AlarmSwitch1"
+            <TextView
+                android:id="@+id/tvAlarm1"
                 android:layout_width="match_parent"
-                android:layout_height="54dp"
-                android:checked="true"
-                android:onClick="onClickAlarmSwitch2"
-                android:text="소등(OFF) 예약" />
+                android:layout_height="wrap_content"
+                android:text="알람 1"
+                android:textSize="16dp"/>
 
             <LinearLayout
                 android:id="@+id/AlarmLayout1"
@@ -109,15 +121,24 @@
                     android:layout_width="320dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:text="00 : 00"
+                    android:text="No Alarm"
                     android:textSize="30dp" />
 
                 <Button
                     android:id="@+id/AlarmButton1"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:onClick="onClickAlarmButton2"
+                    android:layout_marginRight="10dp"
+                    android:onClick="onClickAlarmButton1"
                     android:text="알람 설정" />
+
+                <Button
+                    android:id="@+id/AlarmResetButton1"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginRight="10dp"
+                    android:onClick="onClickAlarmResetButton1"
+                    android:text="끄기" />
             </LinearLayout>
 
         </LinearLayout>

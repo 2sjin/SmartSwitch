@@ -1,3 +1,4 @@
+
 /** Handle root or redirect to captive portal */
 void handleRoot() {
   String s; 
@@ -59,15 +60,14 @@ void handleOnOff() {
   String value = server.arg("LEDstatus");
   if (server.hasArg("LEDstatus")) {
     if (value == "0") {
-      Serial.println("LED 켜짐");
       digitalWrite(LED, LOW);
-      servo.write(0);
+      setServo0();
       GoHome();
     }
     else if (value == "1") {
-      Serial.println("LED 꺼짐");
+
       digitalWrite(LED, HIGH);
-      servo.write(100);
+      setServo1();
       GoHome();
     }
     else
@@ -77,23 +77,25 @@ void handleOnOff() {
     Serial.println("null");
 }
 
-
-void handleSetAlarm0() {
-  String nameOfArg = "timeCode0";
-  String valueOfArg = server.arg(nameOfArg);
-  if (server.hasArg(nameOfArg)) {
-    Serial.println("켜짐(ON) 예약: " + valueOfArg);
-  }
-  else
-    Serial.println("null");
+void setServo0() {
+  Serial.println("서보모터 0 동작");
+  servo.write(0);
 }
 
-void handleSetAlarm1() {
-  String nameOfArg = "timeCode1";
+void setServo1() {
+  Serial.println("서보모터 1 동작");
+  servo.write(100);
+}
+
+void handleSetAlarm0() { setAlarm(0); }
+void handleSetAlarm1() { setAlarm(1); }
+
+void setAlarm(int num) {
+  String nameOfArg = "timeCode" + String(num);
   String valueOfArg = server.arg(nameOfArg);
-  if (server.hasArg(nameOfArg)) {
-    Serial.println("꺼짐(OFF) 예약: " + valueOfArg);
-  }
+  timeCode[num] = valueOfArg;
+  if (server.hasArg(nameOfArg))
+    Serial.println(nameOfArg + " = " + valueOfArg + ", now = " + String(t->tm_hour*100 + t->tm_min));
   else
     Serial.println("null");
 }
