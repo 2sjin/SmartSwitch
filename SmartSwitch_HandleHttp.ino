@@ -98,8 +98,8 @@ void setServo1() {
   Serial.println(angle);  // 현재 각도 출력
 }
 
-void handleSetAlarm0() { setAlarm(0); }
-void handleSetAlarm1() { setAlarm(1); }
+void handleSetAlarm0() { setAlarm(0); GoHome(); }
+void handleSetAlarm1() { setAlarm(1); GoHome(); }
 
 void setAlarm(int num) {
   String nameOfArg = "timeCode" + String(num);
