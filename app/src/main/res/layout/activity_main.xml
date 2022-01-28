@@ -12,8 +12,8 @@
 
     <LinearLayout
         android:id="@+id/linearLayout2"
-        android:layout_width="373dp"
-        android:layout_height="190dp"
+        android:layout_width="377dp"
+        android:layout_height="98dp"
         android:layout_marginTop="4dp"
         android:gravity="center|top"
         android:orientation="vertical"
@@ -23,13 +23,13 @@
 
         <Button
             android:id="@+id/buttonWiFi"
-            android:layout_width="271dp"
-            android:layout_height="74dp"
+            android:layout_width="204dp"
+            android:layout_height="wrap_content"
             android:layout_marginTop="20dp"
             android:layout_marginBottom="25dp"
             android:backgroundTint="@android:color/holo_green_dark"
             android:onClick="onClickButtonConnect"
-            android:text="Wi-Fi 설정\n(Configure WiFi)"
+            android:text="Wi-Fi 설정"
             android:textAllCaps="false"
             android:textSize="16sp"
             android:textStyle="bold" />
@@ -41,22 +41,6 @@
             android:visibility="gone">
 
         </WebView>
-
-        <TextView
-            android:id="@+id/textView2"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="서버 주소(Server Address)"
-            android:textSize="14dp" />
-
-        <EditText
-            android:id="@+id/IP_Address"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:ems="10"
-            android:inputType="textPersonName"
-            android:minHeight="48dp"
-            android:text="192.168.0.23" />
 
     </LinearLayout>
 

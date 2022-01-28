@@ -34,10 +34,10 @@ import java.nio.ByteOrder;
 
 public class MainActivity extends AppCompatActivity {
     String [] STR_MACRO = {"Unknown Data", "Alarm Off"};
-    String ip = "192.168.0.23";
+    static String ip = "192.168.0.23";
 
-    SharedPreferences pref;
-    SharedPreferences.Editor editor;
+    static SharedPreferences pref;
+    static SharedPreferences.Editor editor;
 
     private static long back_pressed;
     int alarmMode;
@@ -49,7 +49,6 @@ public class MainActivity extends AppCompatActivity {
     LinearLayout alarmLayout0, alarmLayout1;
     TextView tvAlarm0, tvAlarm1, alarmTime0, alarmTime1;
     WebView webViewMain;
-    EditText editTextIP;
 
     // 액티비티 생성 시
     @Override
@@ -74,7 +73,6 @@ public class MainActivity extends AppCompatActivity {
         alarmTime0 = findViewById(R.id.AlarmTime0);
         alarmTime1 = findViewById(R.id.AlarmTime1);
         webViewMain = findViewById(R.id.WebViewMain);
-        editTextIP = findViewById(R.id.IP_Address);
 
         actionButton0.setText(pref.getString("name_act0", "ON"));
         actionButton1.setText(pref.getString("name_act1", "OFF"));
@@ -82,7 +80,9 @@ public class MainActivity extends AppCompatActivity {
         tvAlarm1.setText("◆ 알람: " + pref.getString("name_act1", "OFF"));
         alarmTime0.setText(pref.getString("alarm0", STR_MACRO[0]));
         alarmTime1.setText(pref.getString("alarm1", STR_MACRO[0]));
-        editTextIP.setText(pref.getString("server_ip", "192.168.0.23"));
+
+        String getAddress = MainActivity.pref.getString("server_ip", "192.168.0.23");
+        ip = getAddress;
 
         // 버튼 0 길게 눌렀을 때
         actionButton0.setOnLongClickListener(new View.OnLongClickListener() {
@@ -125,20 +125,6 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        // 하이
-        editTextIP.addTextChangedListener(new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) { }
-
-            @Override
-            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) { }
-
-            @Override
-            public void afterTextChanged(Editable editable) {
-                editor.putString("server_ip", editable.toString());
-                editor.commit();
-            }
-        });
     }
 
     // 액티비티 재개 시
@@ -199,13 +185,11 @@ public class MainActivity extends AppCompatActivity {
 
     // ON 버튼을 눌렀을 때
     public void onClickButtonOn(View view) {
-        ip = String.valueOf(editTextIP.getText());
         webViewMain.loadUrl(ip + "/onoff?LEDstatus=0");
     }
 
     // OFF 버튼을 눌렀을 때
     public void onClickButtonOff(View view) {
-        ip = String.valueOf(editTextIP.getText());
         webViewMain.loadUrl(ip + "/onoff?LEDstatus=1");
     }
 
@@ -251,7 +235,10 @@ public class MainActivity extends AppCompatActivity {
     public void showConnectionErrorDialog() {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setTitle("서버 접속 실패");
-        builder.setMessage("단말기 WiFi(SmartSwitch) 연결 후,\nWIFI 설정(Configure WiFi)을 진행하시기 바랍니다.");
+        builder.setMessage("WIFI 설정 화면에서 다음을 확인해주세요.\n"
+                            + "1. 단말기 WiFi \"SmartSwitch\"에 연결 후,\n[Configure WiFi]를 진행하였나요?\n"
+                            + "2. 서버 주소(Server Address)가 올바르게 입력되었나요?\n"
+                            + "3. 그 외 장치의 전원 및 네트워크 설정에는 문제가 없나요?");
         builder.setCancelable(false);
         builder.setPositiveButton("WIFI 설정",  new DialogInterface.OnClickListener() {
             @Override
@@ -281,7 +268,6 @@ public class MainActivity extends AppCompatActivity {
 
     // TimePicker 다이얼로그 출력(알람 설정)
     public void showTimePickerDialog(TextView tvAlarmTime) {
-        ip = String.valueOf(editTextIP.getText());
         TimePickerDialog timePickerDialog = new TimePickerDialog
                 (MainActivity.this, android.app.AlertDialog.THEME_HOLO_DARK, new TimePickerDialog.OnTimeSetListener() {
                     @Override
