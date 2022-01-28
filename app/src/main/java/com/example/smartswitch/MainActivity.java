@@ -235,7 +235,7 @@ public class MainActivity extends AppCompatActivity {
     public void showConnectionErrorDialog() {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setTitle("서버 접속 실패");
-        builder.setMessage("WIFI 설정 화면에서 다음을 확인해주세요.\n"
+        builder.setMessage("WIFI 설정 화면에서 다음을 확인해주세요.\n\n"
                             + "1. 단말기 WiFi \"SmartSwitch\"에 연결 후,\n[Configure WiFi]를 진행하였나요?\n"
                             + "2. 서버 주소(Server Address)가 올바르게 입력되었나요?\n"
                             + "3. 그 외 장치의 전원 및 네트워크 설정에는 문제가 없나요?");
