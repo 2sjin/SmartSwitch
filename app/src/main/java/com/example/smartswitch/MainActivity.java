@@ -56,9 +56,11 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        // 데이터 저장 공간 로드
         pref = getSharedPreferences("SMART_SWITCH", Context.MODE_PRIVATE);
         editor = pref.edit();
 
+        // 레이아웃에서 컴포넌트 불러오기
         actionButton0 = findViewById(R.id.actionButton0);
         actionButton1 = findViewById(R.id.actionButton1);
         buttonWiFi = findViewById(R.id.buttonWiFi);
@@ -74,6 +76,7 @@ public class MainActivity extends AppCompatActivity {
         alarmTime1 = findViewById(R.id.AlarmTime1);
         webViewMain = findViewById(R.id.WebViewMain);
 
+        // 저장한 데이터 불러오기
         actionButton0.setText(pref.getString("name_act0", "ON"));
         actionButton1.setText(pref.getString("name_act1", "OFF"));
         tvAlarm0.setText("◆ 알람: " + pref.getString("name_act0", "ON"));

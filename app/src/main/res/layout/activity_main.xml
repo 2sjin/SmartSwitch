@@ -13,7 +13,7 @@
     <LinearLayout
         android:id="@+id/linearLayout2"
         android:layout_width="377dp"
-        android:layout_height="98dp"
+        android:layout_height="112dp"
         android:layout_marginTop="4dp"
         android:gravity="center|top"
         android:orientation="vertical"
@@ -26,7 +26,6 @@
             android:layout_width="204dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="20dp"
-            android:layout_marginBottom="25dp"
             android:backgroundTint="@android:color/holo_green_dark"
             android:onClick="onClickButtonConnect"
             android:text="Wi-Fi 설정"
@@ -41,6 +40,13 @@
             android:visibility="gone">
 
         </WebView>
+
+        <TextView
+            android:id="@+id/textView3"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:text="(길게 누르면 네트워크 초기화)" />
 
     </LinearLayout>
 
