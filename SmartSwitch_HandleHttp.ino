@@ -75,31 +75,35 @@ void handleOnOff() {
 }
 
 void setServo0() {
-  Serial.print("서보모터 0 동작(+40)\t");
-  for(int i = 0; i < 40; i++) {  // 현재 각도에서 40도 더해주기
-    angle = angle + 1;   
-    if(angle >= 180)
-      angle = 180;  
-    servo.write(angle); 
-    delay(10);
-  }
-  Serial.println(angle);  // 현재 각도 출력
+  Serial.print("서보모터 0 동작\t");
+  decreaseServoAngle(90, 0);
+  increaseServoAngle(0, 90);
 }
 
 void setServo1() {
-  Serial.print("서보모터 1 동작(-40)\t");
-  for(int i = 0 ; i < 40 ; i++) {  // 현재 각도에서 40도 빼주기
-    angle = angle - 1;
-    if(angle <= 0)
-      angle = 0;
-    servo.write(angle);
-    delay(10);
-  }
-  Serial.println(angle);  // 현재 각도 출력
+  Serial.print("서보모터 1 동작\t");
+  increaseServoAngle(90, 180);
+  decreaseServoAngle(180, 90);
 }
 
 void handleSetAlarm0() { setAlarm(0); GoHome(); }
 void handleSetAlarm1() { setAlarm(1); GoHome(); }
+
+// 서보모터 각도 증가
+void increaseServoAngle(int angleOfStart, int angleOfEnd) {
+  for(int i=angleOfStart; i<=angleOfEnd; i+=9) {
+      servo.write(i);
+      delay(10);
+  }
+}
+
+// 서보모터 각도 감소
+void decreaseServoAngle(int angleOfStart, int angleOfEnd) {
+  for(int i=angleOfStart; i>=angleOfEnd; i-=9) {
+      servo.write(i);
+      delay(10);
+  }
+}
 
 void setAlarm(int num) {
   String nameOfArg = "timeCode" + String(num);
