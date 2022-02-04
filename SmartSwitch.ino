@@ -107,12 +107,18 @@ void loop() {
 
   // 알람 0: 현재 시각과 알람 시각이 일치하면 알람 작동
   if(timeCode[0] == String(t->tm_hour*100 + t->tm_min)) {
-    setServo0();
+    Serial.print("알람 0 실행\t");
+    decreaseServoAngle(90, 0);
+    increaseServoAngle(0, 90);
+    delay(5000);
   }
 
   // 알람 1: 현재 시각과 알람 시각이 일치하면 알람 작동
   if(timeCode[1] == String(t->tm_hour*100 + t->tm_min)) {
-    setServo1();
+    Serial.print("알람 1 실행\t");
+    increaseServoAngle(90, 180);
+    decreaseServoAngle(180, 90);
+    delay(5000);
   }
 
   // 공장 초기화

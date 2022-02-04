@@ -59,12 +59,16 @@ void handleOnOff() {
   if (server.hasArg("LEDstatus")) {
     if (value == "0") {
       digitalWrite(LED, LOW);
-      setServo0();
+      Serial.print("서보모터 0 동작\t");
+      decreaseServoAngle(90, 0);
+      increaseServoAngle(0, 90);
       GoHome();
     }
     else if (value == "1") {
       digitalWrite(LED, HIGH);
-      setServo1();
+      Serial.print("서보모터 1 동작\t");
+      increaseServoAngle(90, 180);
+      decreaseServoAngle(180, 90);
       GoHome();
     }
     else
@@ -74,24 +78,12 @@ void handleOnOff() {
     Serial.println("null");
 }
 
-void setServo0() {
-  Serial.print("서보모터 0 동작\t");
-  decreaseServoAngle(90, 0);
-  increaseServoAngle(0, 90);
-}
-
-void setServo1() {
-  Serial.print("서보모터 1 동작\t");
-  increaseServoAngle(90, 180);
-  decreaseServoAngle(180, 90);
-}
-
 void handleSetAlarm0() { setAlarm(0); GoHome(); }
 void handleSetAlarm1() { setAlarm(1); GoHome(); }
 
 // 서보모터 각도 증가
 void increaseServoAngle(int angleOfStart, int angleOfEnd) {
-  for(int i=angleOfStart; i<=angleOfEnd; i+=9) {
+  for(int i=angleOfStart; i<=angleOfEnd; i+=15) {
       servo.write(i);
       delay(10);
   }
@@ -99,7 +91,7 @@ void increaseServoAngle(int angleOfStart, int angleOfEnd) {
 
 // 서보모터 각도 감소
 void decreaseServoAngle(int angleOfStart, int angleOfEnd) {
-  for(int i=angleOfStart; i>=angleOfEnd; i-=9) {
+  for(int i=angleOfStart; i>=angleOfEnd; i-=15) {
       servo.write(i);
       delay(10);
   }
