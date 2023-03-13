@@ -28,7 +28,12 @@
 ## 사진
 ![image](https://user-images.githubusercontent.com/91407433/151683260-69f479bf-e26c-4e61-8abe-716e0c179a94.png)
 <br>(IOT ON/OFF 스위치 프로토타입)
-  
+
+## 스크린샷(안드로이드 앱)
+|메인 화면|Wi-Fi 설정|서버 접속 실패|
+|:-:|:-:|:-:|
+|![1](https://user-images.githubusercontent.com/91407433/224721623-579eb458-8cec-48bf-8d9a-dbf70059a0cd.jpg)|![2](https://user-images.githubusercontent.com/91407433/224721642-9b40cd28-4c20-47b4-a993-a4c52be62f23.jpg)|![3](https://user-images.githubusercontent.com/91407433/224721653-3a43b88d-50f3-4fec-a1ee-bdecf30ff676.jpg)|
+
 ## 개선 방향
 - 외관디자인 개선
   - 스위치에 잘 고정이 되지 않는 형태로 접착식보다는 고정하는 방식을 사용해야함
